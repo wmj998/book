@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>半岛书城</title>
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div id="header">
+    <img class="logo_img" alt="" src="/static/img/logo.gif">
+    <span class="wel_word">网上书城</span>
+    <div>
+        {% block head %}
+        {% endblock %}
+        <a href="/user/login/">登录</a> |
+        <a href="/user/register/">注册</a> &nbsp;&nbsp;
+        <a href="/cart/index/">购物车</a>
+    </div>
+</div>
+{% block middle %}
+    <div id="main">
+        <div id="book">
+            <div class="book_cond">
+                <form action="/query/" method="post">
+                    价格：<input id="min" type="text" name="min" value="{{ min }}"> 元 -
+                    <input id="max" type="text" name="max" value="{{ max }}"> 元
+                    <input type="submit" value="查询"/>
+                </form>
+            </div>
+            <br/>
+            {% for book in page_now %}
+                <div class="b_list">
+                    <div class="img_div">
+                        <img class="book_img" alt="" src="/static/img/default.jpg"/>
+                    </div>
+                    <div class="book_info">
+                        <div class="book_name">
+                            <span class="sp1">书名:</span>
+                            <span class="sp2">{{ book.book_name }}</span>
+                        </div>
+                        <div class="book_author">
+                            <span class="sp1">作者:</span>
+                            <span class="sp2">{{ book.book_author }}</span>
+                        </div>
+                        <div class="book_price">
+                            <span class="sp1">价格:</span>
+                            <span class="sp2">￥{{ book.book_price }}</span>
+                        </div>
+                        <div class="book_sales">
+                            <span class="sp1">销量:</span>
+                            <span class="sp2">{{ book.book_sales }}</span>
+                        </div>
+                        <div class="book_amount">
+                            <span class="sp1">库存:</span>
+                            <span class="sp2">{{ book.book_stock }}</span>
+                        </div>
+                        <div class="book_add">
+                            <button><a href="/cart/add_cart/?page={{ page_now.number }}&id={{ book.id }}">加入购物车</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <form action="/exchange/" method="post">
+            <div id="page_nav">
+                <a href="/index/?page=1">首页</a>
+                {% if page_now.has_previous %}
+                    <a href="/index/?page={{ page_now.previous_page_number }}">上一页</a>
+                {% else %}
+                    <label>上一页</label>
+                {% endif %}
+                {% for number in paginator.page_range %}
+                    {% if page_now.number == number %}
+                        <label>{{ number }}</label>
+                    {% else %}
+                        <a href="/index/?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_now.has_next %}
+                    <a href="/index/?page={{ page_now.next_page_number }}">下一页</a>
+                {% else %}
+                    <label>下一页</label>
+                {% endif %}
+                <a href="/index/?page={{ paginator.num_pages }}">末页</a>
+                共{{ paginator.num_pages }}页，{{ number_all }}条记录
+                到第<input name="pn" id="pn_input"/>页
+                <input type="submit" value="确定">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+<div id="bottom">
+		<span>
+			半岛书城.Copyright &copy;2021
+		</span>
+</div>
+</body>
+</html>

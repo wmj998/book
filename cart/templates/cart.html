@@ -1,0 +1,61 @@
+{% extends 'user_index.html' %}
+{% block name %}
+    <span>欢迎<span class="um_span">{{ user }}</span>光临半岛书城</span>
+    {% if user.is_staff %}
+        <a href="/manager/index/">后台管理</a>
+    {% endif %}
+    <a href="/user/index/">返回商城</a>
+{% endblock %}
+{% block middle %}
+    <div id="main">
+        {% if carts %}
+            <table>
+                <tr>
+                    <td>商品名称</td>
+                    <td>数量</td>
+                    <td>单价</td>
+                    <td>金额</td>
+                    <td>操作</td>
+                </tr>
+                {% for cart in page_now %}
+                    <tr>
+                        <td>{{ cart.book_name }}</td>
+                        <td>{{ cart.number }}</td>
+                        <td>{{ cart.one_price }}</td>
+                        <td>{{ cart.all_price }}</td>
+                        <td><a href="/cart/delete_cart/?page={{ page_now.number }}&id={{ cart.id }}">删除</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="cart_info">
+                <span class="cart_span">购物车中共有<span class="b_count">{{ numbers }}</span>件商品</span>
+                <span class="cart_span">总金额<span class="b_price">{{ money }}</span>元</span>
+                <span class="cart_span"><a href="/cart/delete_all/">清空购物车</a></span>
+                <span class="cart_span"><a href="/cart/checkout/">去结账</a></span>
+            </div>
+            <div id="page_nav">
+                {% if page_now.has_previous %}
+                    <a href="/cart/index/?page={{ page_now.previous_page_number }}">上一页</a>
+                {% else %}
+                    <label>上一页</label>
+                {% endif %}
+                {% for number in paginator.page_range %}
+                    {% if page_now.number == number %}
+                        <label>{{ number }}</label>
+                    {% else %}
+                        <a href="/cart/index/?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_now.has_next %}
+                    <a href="/cart/index/?page={{ page_now.next_page_number }}">下一页</a>
+                {% else %}
+                    <label>下一页</label>
+                {% endif %}
+            </div>
+        {% else %}
+            <h1>您暂时还没有添加商品</h1>
+            <br/>
+            <p align="center"><a href="/user/index/">去添加</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

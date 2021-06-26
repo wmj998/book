@@ -1,0 +1,46 @@
+{% extends 'manager.html' %}
+{% block manager %}
+    <div id="main">
+        <table>
+            <tr>
+                <td>日期</td>
+                <td>金额</td>
+                <td>用户</td>
+                <td>发货</td>
+
+            </tr>
+            {% for order in page_now %}
+                <tr>
+                    <td>{{ order.create_time }}</td>
+                    <td>{{ order.all_price }}</td>
+                    <td>{{ order.user }}</td>
+                    {% if order.state == '未发货' %}
+                        <td><a href="/manager/state/?page={{ page_now.number }}&id={{ order.id }}">点击发货</a></td>
+                    {% else %}
+                        <td>{{ order.state }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br/>
+        <div id="page_nav">
+            {% if page_now.has_previous %}
+                <a href="/manager/order/?page={{ page_now.previous_page_number }}">上一页</a>
+            {% else %}
+                <label>上一页</label>
+            {% endif %}
+            {% for number in paginator.page_range %}
+                {% if page_now.number == number %}
+                    <label>{{ number }}</label>
+                {% else %}
+                    <a href="/manager/order/?page={{ number }}">{{ number }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_now.has_next %}
+                <a href="/manager/order/?page={{ page_now.next_page_number }}">下一页</a>
+            {% else %}
+                <label>下一页</label>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

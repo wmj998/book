@@ -1,0 +1,55 @@
+{% extends 'manager.html' %}
+{% block manager %}
+    <div id="main">
+        <table>
+            <tr>
+                <td>名称</td>
+                <td>价格</td>
+                <td>作者</td>
+                <td>销量</td>
+                <td>库存</td>
+                <td colspan="2">操作</td>
+            </tr>
+            {% for book in page_now %}
+                <tr>
+                    <td>{{ book.book_name }}</td>
+                    <td>{{ book.book_price }}</td>
+                    <td>{{ book.book_author }}</td>
+                    <td>{{ book.book_sales }}</td>
+                    <td>{{ book.book_stock }}</td>
+                    <td><a href="/manager/update_book/?id={{ book.id }}">修改</a></td>
+                    <td><a href="/manager/delete_book/?id={{ book.id }}">删除</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a href="/manager/add_book/">添加图书</a></td>
+            </tr>
+        </table>
+        <br/>
+        <div id="page_nav">
+            {% if page_now.has_previous %}
+                <a href="/manager/book_manager/?page={{ page_now.previous_page_number }}">上一页</a>
+            {% else %}
+                <label>上一页</label>
+            {% endif %}
+            {% for number in paginator.page_range %}
+                {% if page_now.number == number %}
+                    <label>{{ number }}</label>
+                {% else %}
+                    <a href="/manager/book_manager/?page={{ number }}">{{ number }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_now.has_next %}
+                <a href="/manager/book_manager/?page={{ page_now.next_page_number }}">下一页</a>
+            {% else %}
+                <label>下一页</label>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

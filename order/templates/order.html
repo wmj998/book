@@ -1,0 +1,57 @@
+{% extends 'user_index.html' %}
+{% block name %}
+    <span>欢迎<span class="um_span">{{ username }}</span>光临尚硅谷书城</span>
+    {% if username.is_staff %}
+        <a href="/manager/index/">后台管理</a>
+    {% endif %}
+    <a href="/user/index/">返回商城</a>
+{% endblock %}
+{% block middle %}
+    <div id="main">
+        {% if orders %}
+            <table>
+                <tr>
+                    <td>日期</td>
+                    <td>金额</td>
+                    <td>状态</td>
+                    <td>详情</td>
+                </tr>
+                {% for order in page_now %}
+                    <tr>
+                        <td>{{ order.create_time }}</td>
+                        <td>{{ order.all_price }}</td>
+                        <td>{{ order.state }}</td>
+                        {% if order.state != '已收货' %}
+                            <td><a href="/order/state/?page={{ page_now.number }}&id={{ order.id }}">确认收货</a></td>
+                        {% else %}
+                            <td>确认收货</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <div id="page_nav">
+                {% if page_now.has_previous %}
+                    <a href="/order/index/?page={{ page_now.previous_page_number }}">上一页</a>
+                {% else %}
+                    <label>上一页</label>
+                {% endif %}
+                {% for number in paginator.page_range %}
+                    {% if page_now.number == number %}
+                        <label>{{ number }}</label>
+                    {% else %}
+                        <a href="/order/index/?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_now.has_next %}
+                    <a href="/order/index/?page={{ page_now.next_page_number }}">下一页</a>
+                {% else %}
+                    <label>下一页</label>
+                {% endif %}
+            </div>
+        {% else %}
+            <h1>您暂时还没有订单信息</h1>
+            <br/>
+            <p align="center"><a href="/user/index/">去添加</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'user_index.html' %}
+{% block name %}
+    <span>欢迎<span class="um_span">{{ username }}</span>光临尚硅谷书城</span>
+    {% if username.is_staff %}
+        <a href="/manager/index/">后台管理</a>
+    {% endif %}
+    <a href="/user/index/">返回商城</a>
+{% endblock %}
+{% block middle %}
+    <div id="main">
+        <h1>注销，{{ username }}</h1>
+        <br/>
+        <form action="/user/delete/" method="post">
+            <p align="center">
+                <input class="itxt" type="password" placeholder="请输入密码" autocomplete="off" tabindex="1"
+                       name="password" value="{{ password }}"/>
+                <input type="submit" value="注销"/>
+            </p>
+            <br/>
+            <p style="color: red" align="center">
+                {{ error }}
+            </p>
+        </form>
+    </div>
+{% endblock %}

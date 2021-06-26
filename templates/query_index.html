@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+{% block head %}
+    <a href="/index/">商城主页</a>
+{% endblock %}
+{% block middle %}
+    <div id="main">
+        {% if books %}
+            <div id="book">
+                <div class="book_cond">
+                    <form action="/query/" method="post">
+                        价格：<input id="min" type="text" name="min" value="{{ min }}"> 元 -
+                        <input id="max" type="text" name="max" value="{{ max }}"> 元
+                        <input type="submit" value="查询"/>
+                    </form>
+                </div>
+                <br/>
+                {% for book in page_now %}
+                    <div class="b_list">
+                        <div class="img_div">
+                            <img class="book_img" alt="" src="/static/img/default.jpg"/>
+                        </div>
+                        <div class="book_info">
+                            <div class="book_name">
+                                <span class="sp1">书名:</span>
+                                <span class="sp2">{{ book.book_name }}</span>
+                            </div>
+                            <div class="book_author">
+                                <span class="sp1">作者:</span>
+                                <span class="sp2">{{ book.book_author }}</span>
+                            </div>
+                            <div class="book_price">
+                                <span class="sp1">价格:</span>
+                                <span class="sp2">￥{{ book.book_price }}</span>
+                            </div>
+                            <div class="book_sales">
+                                <span class="sp1">销量:</span>
+                                <span class="sp2">{{ book.book_sales }}</span>
+                            </div>
+                            <div class="book_amount">
+                                <span class="sp1">库存:</span>
+                                <span class="sp2">{{ book.book_stock }}</span>
+                            </div>
+                            <div class="book_add">
+                                <button><a href="/cart/add_cart/?page={{ page_now.number }}&id={{ book.id }}">加入购物车</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form action="/exchange_query/?&min={{ min }}&max={{ max }}" method="post">
+                <div id="page_nav">
+                    <a href="/query/?page=1&min={{ min }}&max={{ max }}">首页</a>
+                    {% if page_now.has_previous %}
+                        <a href="/query/?page={{ page_now.previous_page_number }}&min={{ min }}&max={{ max }}">上一页</a>
+                    {% else %}
+                        <label>上一页</label>
+                    {% endif %}
+                    {% for number in paginator.page_range %}
+                        {% if page_now.number == number %}
+                            <label>{{ number }}</label>
+                        {% else %}
+                            <a href="/query/?page={{ number }}&min={{ min }}&max={{ max }}">{{ number }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_now.has_next %}
+                        <a href="/query/?page={{ page_now.next_page_number }}&min={{ min }}&max={{ max }}">下一页</a>
+                    {% else %}
+                        <label>下一页</label>
+                    {% endif %}
+                    <a href="/query/?page={{ paginator.num_pages }}&min={{ min }}&max={{ max }}">末页</a>
+                    共{{ paginator.num_pages }}页，{{ number_all }}条记录
+                    到第<input name="pn" id="pn_input"/>页
+                    <input type="submit" value="确定">
+                </div>
+            </form>
+        {% else %}
+            <h1>暂无搜索结果</h1>
+        {% endif %}
+    </div>
+{% endblock %}

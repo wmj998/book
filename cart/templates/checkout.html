@@ -1,0 +1,13 @@
+{% extends 'user_index.html' %}
+{% block name %}
+    <span>欢迎<span class="um_span">{{ username }}</span>光临书城</span>
+    {% if username.is_staff %}
+        <a href="/manager/index/">后台管理</a>
+    {% endif %}
+    <a href="/user/index/">返回商城</a>
+{% endblock %}
+{% block middle %}
+    <div id="main">
+        <h1>你的订单已结算，订单号为123456789</h1>
+    </div>
+{% endblock %}

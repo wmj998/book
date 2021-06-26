@@ -1,0 +1,42 @@
+{% extends 'manager.html' %}
+{% block style %}
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+
+	h1 a {
+		color:red;
+	}
+
+	input {
+		text-align: center;
+	}
+</style>
+{% endblock %}
+{% block manager %}
+<div id="main">
+			<form action="/manager/update_book/?id={{ id }}" method="post">
+				<table>
+					<tr>
+						<td>名称</td>
+						<td>价格</td>
+						<td>作者</td>
+						<td>销量</td>
+						<td>库存</td>
+						<td colspan="2">操作</td>
+					</tr>
+
+					<tr>
+						<td><input name="book_name" type="text" value="{{ book.book_name }}"/></td>
+						<td><input name="book_price" type="text" value="{{ book.book_price }}"/></td>
+						<td><input name="book_author" type="text" value="{{ book.book_author }}"/></td>
+						<td><input name="book_sales" type="text" value="{{ book.book_sales }}"/></td>
+						<td><input name="book_stock" type="text" value="{{ book.book_stock }}"/></td>
+						<td><input type="submit" value="提交"/></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+{% endblock %}
